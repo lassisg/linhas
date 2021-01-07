@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "linhas"
+version = "0.1.0"
+description = "This application intends to  compute the capacitive reactance, inductive reactance and resistance of a Power Transmission Line."
+repository = "https://github.com/lassisg/linhas_python.git"
+authors = ["Leandro Gabriel <lassisg@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+flake8 = "^3.8.4"
+autopep8 = "^1.5.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
