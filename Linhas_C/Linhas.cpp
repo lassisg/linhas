@@ -1,0 +1,663 @@
+//------------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <conio.h>
+//------------------------------------------------------------------------------
+main(void)
+{
+int k,Reat,solo,tipo,metodo,z,i,j,ro,t1,t2,f;
+float cs,ac,pa,bc,Lbc,Fm[4],Ds[4],x[4][4],h[4],d[4][4],D[4][4],C11,Coo;
+float pi,r[4],A[4][4],a[3][3],Ia[3][3],Cao,Cbo,Cco,Cab,Cbc,Cac,Ca,Cb,Cc;
+float det,det1,det2,det3,det4,det5,det6,det7,det8,Xc11,Xcoo,F[4][4],Dxc[4][4];
+float X[4][4],DX[3][3],Xeq[3][3],Xa,Xb,Xc,X11,De,Df[4][4],Xl[4][4],Xlc[4][4];
+float Dx[4][4],Xs,rl[4],Rc[4][4],p[4][4],teta[4][4],P[4][4],R[4][4],Fc[3][3];
+float DR[4][4],T[4][4],Leq[3][3],alfa,La,Lb,Lc,w,Roo,t[3][3],R11,Req[3][3];
+//------------------------------------------------------------------------------
+printf("\n********************************************************************************\n");
+printf("\n\t\tEste programa foi desenvolvido pela turma da cadeira de\n");
+printf("\tLinhas de Transmiss%co, lecionada pelo professor Arnaldo C%cbolo,\n",198,130);
+printf("\tno 7%c Per%codo do curso de Engenharia El%ctrica / %cnfase em\n",167,161,130,136);
+printf("\tEletrot%ccnica, no Centro Federal de Educa%c%co Tecnol%cgica\n",130,135,198,162);
+printf("\tCelso Suckow da Fonseca - CEFET-RJ.\n");
+printf("\n********************************************************************************\n");
+printf("\nComponentes do grupo:\n");
+printf("- Fabr%ccia da Cunha Con%culi;\n",161,135);
+printf("- Fernando Santos Andrade;\n");
+printf("- Jo%co Batista Dias de Oliveira Junior;\n",198);
+printf("- Jos%c Ribamar Dantas;\n",130);
+printf("- Leandro de Assis Gabriel;\n");
+printf("- Luciana Oliveira de Barros;\n");
+printf("- Robson Rey Viana;\n");
+printf("- Rodrigo Pinto da Silva.\n\n");
+getch();
+//------------------------------------------------------------------------------
+clrscr();
+
+             /*           DADOS DE ENTRADA           */
+pi=3.14159265358979;
+printf ("\n\nDADOS DE ENTRADA:\n");/*Imprime na tela a frase entre ""*/
+printf ("\nEntre com o valor da altura do condutor 'c' ao solo.\n");
+//scanf ("%f",&cs);//Pega a entrada do usuário ---
+cs=8.5;
+printf ("Entre com o valor de altura entre condutores 'a' e 'c'.\n");
+//scanf ("%f",&ac);//Pega a entrada do usuário ---
+ac=2.7;
+printf ("Entre com o valor de altura entre o p%cra-raio e o condutor 'a'.\n",160);
+//scanf ("%f",&pa);//Pega a entrada do usuário ---
+pa=1.8;
+bc=ac/2; /*altura entre os condutres "b" e "c"*/
+printf ("Entre com o valor de freq%c%cncia.\n",129,136);
+//scanf ("%f",&f);//Pega a entrada do usuário ---
+f=60;
+printf ("Entre com o valor de comprimento do condutor 'b' ao 'c'.\n");
+//scanf ("%f",&Lbc);//Pega a entrada do usuário ---
+Lbc=2.8;
+printf ("Entre com o valor de flecha m%cdia dos condutores.\n",130);
+//scanf ("%f",&Fm[0]);//Pega a entrada do usuário ---
+Fm[0]=1.5;
+Fm[1]=Fm[0];
+Fm[2]=Fm[0];
+printf ("Entre com o valor de flecha m%cdia do p%Cra-raio.\n",130,160);
+//scanf ("%f",&Fm[3]);//Pega a entrada do usuário ---
+Fm[3]=1.2;
+printf ("Entre com o valor de raio m%cdio geom%ctrico do condutor.\n",130,130);
+//scanf ("%f",&Ds[0]);//Pega a entrada do usuário ---
+Ds[0]=0.004812;
+Ds[1]=Ds[0];
+Ds[2]=Ds[0];
+printf ("Entre com o valor de raio m%cdio geom%ctrico do p%cra-raio.\n",130,130,160);
+//scanf ("%f",&Ds[3]);//Pega a entrada do usuário ---
+Ds[3]=.000897;
+//------------------------------------------------------------------------------
+for (i=0;i<4;i++)
+{
+	for (j=0;j<4;j++)
+	{
+		if (i<3)
+		{
+			if (j<3)
+			{
+				if (i==j) x[i][j]=0;
+				else x[i][j]=Lbc;
+			}
+			else
+			{
+				if (i==j) x[i][j]=0;
+				else x[i][j]=Lbc/2;
+			}
+		}
+		else
+		{
+			if (i==j) x[i][j]=0;
+			else x[i][j]=Lbc/2;
+		}
+	}
+}
+
+/*ALTURAS MÉDIAS*/
+h[0]=cs+ac-.7*Fm[0];
+h[1]=cs+bc-.7*Fm[1];
+h[2]=cs-.7*Fm[2];
+h[3]=cs+ac+pa-.7*Fm[3];
+
+/*DISTÂNCIA ENTRE CONDUTORES*/
+for (i=0;i<4;i++)
+{
+	for (j=0;j<4;j++)
+	{
+		if (j<i) d[i][j]=0;
+	}
+}
+d[0][1]=sqrt((Lbc*Lbc)+(bc*bc));
+d[0][2]=ac;
+d[0][3]=sqrt(((Lbc/2)*(Lbc/2))+(pa*pa));
+d[1][2]=d[0][1];
+d[1][3]=sqrt(((pa+bc)*(pa+bc))+((Lbc/2)*(Lbc/2)));
+d[2][3]=sqrt(((ac+pa)*(ac+pa))+((Lbc/2)*(Lbc/2)));
+
+/*DISTÂNCIA ENTRE CONDUTORES E IMAGENS*/
+for (i=0;i<4;i++)
+{
+	for (j=0;j<4;j++)
+	{
+		if (j>i) D[i][j]=sqrt(4*h[j]*h[i]+((d[i][j])*(d[i][j])));
+		else D[i][j]=0;
+	}
+}
+//------------------------------------------------------------------------------
+k=1;
+while (k==1)
+{
+    clrscr();
+	printf ("\nQual o c%clculo desejado?\n",160);
+    printf ("(1)Reat%cncia Capacitiva;\n",131);
+    printf ("(2)Reat%cncia Indutiva;\n",131);
+    printf ("(3)Resist%cncia.\n",136);
+    scanf ("%d",&Reat);/*Pega a entrada do usuário*/
+    if (Reat==1)
+    {
+    	/*					REATÂNCIA CAPACITIVA    		 	*/
+        printf("Entre com o valor do raio do condutor.\n");
+        scanf("%f",&r[0]);//Pega a entrada do usuário --- r[0]=0.006629;
+        r[1]=r[0];
+        r[2]=r[0];
+        printf("Entre com o valor do raio do p%cra-raio.\n",160);
+        scanf("%f",&r[3]);//Pega a entrada do usuário --- r[3]=0.003175;
+
+        for (i=0;i<4;i++)
+        {
+        	for (j=0;j<4;j++)
+            {
+            	if (i==j) A[i][j]=41446800*log10(2*h[i]/r[i]);
+            	else if (i<j) A[i][j]=41446800*log10(D[i][j]/d[i][j]);
+	            else A[i][j]=A[j][i];
+            }
+        }
+        /*REDUZINDO A MATRIZ (PÁRA-RAIOS ATERRADOS EM TODAS AS ESTRUTURAS)*/
+        for (i=0;i<3;i++)
+        {
+        	for (j=0;j<3;j++)
+            {
+            	if (i<=j) a[i][j]=A[i][j]-((A[i][3])*(A[3][j])/(A[3][3]));
+            	else a[i][j]=a[j][i];
+            }
+        }
+        /*		 	     ACHAR A MATRIZ INVERSA       			*/
+        det1=a[0][0]*a[1][1]*a[2][2];
+        det2=a[0][1]*a[1][2]*a[2][0];
+        det3=a[0][2]*a[1][0]*a[2][1];
+        det4=det1+det2+det3;
+        det5=a[0][2]*a[1][1]*a[2][0];
+        det6=a[1][2]*a[2][1]*a[0][0];
+        det7=a[2][2]*a[0][1]*a[1][0];
+        det8=det5+det6+det7;
+        det=det4-det8;
+        t[0][0]=((a[1][1])*(a[2][2]))-((a[1][2])*(a[2][1]));
+  	   	t[0][1]=(-1)*(((a[1][0])*(a[2][2]))-((a[1][2])*(a[2][0])));
+		t[0][2]=((a[1][0])*(a[2][1]))-((a[1][1])*(a[2][0]));
+		t[1][0]=(-1)*(((a[0][1])*(a[2][2]))-((a[0][2])*(a[2][1])));
+		t[1][1]=((a[0][0])*(a[2][2]))-((a[0][2])*(a[2][0]));
+		t[1][2]=(-1)*(((a[0][0])*(a[2][1]))-((a[0][1])*(a[2][0])));
+		t[2][0]=((a[0][1])*(a[1][2]))-((a[0][2])*(a[1][1]));
+		t[2][1]=(-1)*(((a[0][0])*(a[1][2]))-((a[0][2])*(a[1][0])));
+		t[2][2]=((a[0][0])*(a[1][1]))-((a[0][1])*(a[1][0]));
+		for (i=0;i<3;i++)
+		{
+        	for (j=0;j<3;j++)
+            {
+		    	Ia[i][j]=(t[j][i])/det;
+            }
+        }
+//------------------------------------------------------------------------------
+        clrscr();
+        /*                 CAPACITÂNCIAS PARCIAIS                 */
+        Cao=Ia[0][0]+Ia[0][1]+Ia[0][2];
+        Cbo=Ia[1][1]+Ia[0][1]+Ia[1][2];
+        Cco=Ia[2][2]+Ia[0][2]+Ia[1][2];
+        Cab=-Ia[0][1];
+        Cac=-Ia[0][2];
+        Cbc=-Ia[1][2];
+        printf("\nCAPACIT%cNCIAS PARCIAIS:\n",182);
+        printf("\nCao= %g F/km\n",Cao);
+        printf("\nCbo= %g F/km\n",Cbo);
+        printf("\nCco= %g F/km\n",Cco);
+        printf("\nCab= %g F/km\n",Cab);
+        printf("\nCac= %g F/km\n",Cac);
+        printf("\nCbc= %g F/km\n",Cbc);
+
+        /*               CAPACITÂNCIAS APARENTES                  */
+        Ca=Cao+1.5*(Cab+Cac);
+        Cb=Cbo+1.5*(Cab+Cbc);
+        Cc=Cco+1.5*(Cac+Cbc);
+        printf("\nCAPACIT%cNCIAS APARENTES:\n",182);
+        printf("\nCa= %g F/km\n",Ca);
+        printf("\nCb= %g F/km\n",Cb);
+        printf("\nCc= %g F/km\n",Cc);
+		getch();
+        clrscr();
+
+        /*          CAPACITÂNCIA DE SEQÜÊNCIA POSITIVA              */
+        C11=(Ca+Cb+Cc)/3;
+        printf("\nCAPACIT%cNCIA DE SEQ%c%cNCIA POSITIVA:\n",182,154,210);
+        printf("\nC11= %g F/km\n",C11);
+
+        /*             CAPACITÂNCIA DE SEQÜÊNCIA ZERO               */
+        Coo=1/((a[0][0])+(2*(a[0][1])));
+        printf("\nCAPACIT%cNCIAS DE SEQ%c%cNCIA ZERO:\n",182,154,210);
+        printf("\nCoo= %g F/km\n",Coo);
+		getch();
+
+        //             REATÂNCIA DE SEQÜÊNCIA POSITIVA
+        Xc11=1/(2*pi*f*C11);
+        printf("\nREAT%cNCIA DE SEQ%c%cNCIA POSITIVA:\n",182,154,210);
+        printf("\nXc11= %e Ohm/km\n",Xc11);
+
+        //               REATÂNCIA DE SEQÜÊNCIA ZERO
+        Xcoo=1/(2*pi*f*Coo);
+        printf("\nREAT%cNCIA DE SEQ%c%cNCIA ZERO:\n",182,154,210);
+        printf("\nXcoo= %e Ohm/km\n",Xcoo);
+        getch();
+    }
+    //						CAPACITÂNCIA INDUTIVA
+    else if (Reat==2)
+    {
+        clrscr();
+    	printf ("\nO plano do solo e considerado?\n");
+        printf ("(1)Sim;\n");
+        printf ("(2)N%co.\n",198);
+        scanf ("%d",&solo);//Pega a entrada do usuário
+        //				CONSIDERANDO O SOLO
+        if (solo==1)
+        {
+        	clrscr();
+            printf ("\nO solo e considerado:\n");
+            printf ("(1)Ideal;\n");
+            printf ("(2)Real.\n");
+            scanf ("%d",&tipo);/*Pega a entrada do usuário*/
+            //				SOLO IDEAL
+            if (tipo==1)
+            {
+            	w=2*pi*f;
+                for (i=0;i<4;i++)
+                {
+                	for (j=0;j<4;j++)
+                    {
+                    	if (i==j)
+                     	{
+                      		F[i][j]=0.00046052*log10(2*h[i]/Ds[i]);
+                      		X[i][j]=w*F[i][j];
+                     	}
+                     	else if (i<j)
+                     	{
+                      		F[i][j]=0.00046052*log10(D[i][j]/d[i][j]);
+                      		X[i][j]=w*F[i][j];
+                     	}
+                     	else
+                     	{
+                      		F[i][j]=F[j][i];
+                      		X[i][j]=w*F[i][j];
+                     	}
+                    }
+                }
+
+                for (i=0;i<3;i++)
+                {
+                	for (j=0;j<3;j++)
+                    {
+                    	if (j>=i)
+                     	{
+                      		DX[i][j]=w*(-F[3][i]*F[j][3]/F[3][3]);
+                      		Xeq[i][j]=X[i][j]+DX[i][j];
+                            Leq[i][j]=(Xeq[i][j])/w;
+                     	}
+                     	else
+                        {
+                      		DX[i][j]=DX[j][i];
+                      		Xeq[i][j]=X[i][j]+DX[i][j];
+                            Leq[i][j]=(Xeq[i][j])/w;
+                     	}
+                    }
+                }
+                La=Leq[0][0]-0.5*(Leq[0][1]+Leq[0][2]);
+                Lb=Leq[1][1]-0.5*(Leq[1][0]+Leq[1][2]);
+                Lc=Leq[2][2]-0.5*(Leq[2][0]+Leq[2][1]);
+                /*             REATÂNCIAS APARENTES              */
+                Xa=w*La;
+                Xb=w*Lb;
+                Xc=w*Lc;
+                printf("\nREAT%cNCIAS APARENTES:\n",182);
+                printf("\nXa= %g Ohm/km\n",Xa);
+                printf("\nXb= %g Ohm/km\n",Xb);
+                printf("\nXc= %g Ohm/km\n",Xc);
+
+                /* REATÂNCIA INDUTIVA DE SEQÜÊNCIA POSITIVA OU DE SERVIÇO */
+                X11=(Xa+Xb+Xc)/3;
+                printf("\nREAT%cNCIA DE SEQ%c%cNCIA POSITIVA OU DE SERVI%cO:\n",182,154,210,128);
+                printf("\nX11= %g Ohm/km\n",X11);
+                getch();
+            }
+            //					SOLO REAL
+            else if (tipo==2)
+            {
+                clrscr();
+            	printf ("\nO m%ctodo utilizado para os c%clculos ser%c:\n",130,160,160);
+                printf ("(1)Carson Aproximado;\n");
+                printf ("(2)Carson Exato.\n");
+                scanf("%d",&metodo);/*Pega a entrada do usuário*/
+                // 					CARSON APROXIMADO
+                if (metodo==1)
+                {
+                	printf("Entre com o valor da resistividade do solo.\n");
+                    //scanf("%f",&ro);//Pega a entrada do usuário ---
+                    ro=100;
+                    w=2*pi*f;
+                    De=658.363*(sqrt(ro)/sqrt(f));
+                    for (i=0;i<4;i++)
+                    {
+                    	for (j=0;j<4;j++)
+                        {
+                        	if(i==j)
+                         	{
+                          		Df[i][j]=0.00046052*log10(De);
+                          		Dx[i][j]=w*Df[i][j];
+								F[i][j]=0.00046052*log10(1/Ds[i]);
+                          		Xl[i][j]=w*F[i][j]+Dx[i][j];
+                          		X[i][j]=Xl[i][j]/w;
+                         	}
+                            else if (i<j)
+                         	{
+                          		Df[i][j]=0.00046052*log10(De);
+                          		Dx[i][j]=w*Df[i][j];
+                          		F[i][j]=0.00046052*log10(1/d[i][j]);
+                          		Xl[i][j]=w*F[i][j]+Dx[i][j];
+                          		X[i][j]=Xl[i][j]/w;
+                         	}
+                            else
+                            {
+                             	Df[i][j]=Df[j][i];
+                          		Dx[i][j]=Dx[j][i];
+                          		F[i][j]=F[j][i];
+                          		Xl[i][j]=Xl[j][i];
+                          		X[i][j]=X[j][i];
+                            }
+                        }
+                    }
+                    for (i=0;i<3;i++)
+                    {
+                    	for (j=0;j<3;j++)
+                        {
+                        	if (j>=i)
+                         	{
+                          		DX[i][j]=-w*X[3][i]*X[j][3]/X[3][3];
+                        		Xeq[i][j]=Xl[i][j]+DX[i][j];
+                                Leq[i][j]=Xeq[i][j]/w;
+                         	}
+                         	else
+                         	{
+                          		DX[i][j]=DX[j][i];
+                          		Xeq[i][j]=Xl[i][j]+DX[i][j];
+                                Leq[i][j]=Xeq[i][j]/w;
+                         	}
+                        }
+                    }
+                    La=Leq[0][0]-0.5*(Leq[0][1]+Leq[0][2]);
+                    Lb=Leq[1][1]-0.5*(Leq[1][0]+Leq[1][2]);
+                    Lc=Leq[2][2]-0.5*(Leq[2][0]+Leq[2][1]);
+                    /*             REATÂNCIAS APARENTES              */
+                    Xa=La*w;
+                    Xb=Lb*w;
+                    Xc=Lc*w;
+                    printf("\nREAT%cNCIAS APARENTES:\n",182);
+                    printf("\nXa= %g Ohm/km\n",Xa);
+                    printf("\nXb= %g Ohm/km\n",Xb);
+                    printf("\nXc= %g Ohm/km\n",Xc);
+
+                    /* REATÂNCIA INDUTIVA DE SEQÜÊNCIA POSITIVA OU DE SERVIÇO */
+                    Xs=(Xa+Xb+Xc)/3;
+                    printf("\nREAT%cNCIA DE SEQ%c%cNCIA POSITIVA OU DE SERVI%cO:\n",182,154,210,128);
+                    printf("\nXs= %g Ohm/km\n",Xs);
+                    getch();
+                }
+                //					CARSON EXATO
+                else if (metodo==2)
+                {
+                	printf("Entre com o valor da resistividade do solo.\n");
+                    scanf("%f",&ro);//Pega a entrada do usuário --- ro=100;
+                    w=2*pi*f;
+                    for (i=0;i<4;i++)
+                    {
+                    	for (j=0;j<4;j++)
+                        {
+                        	if (i==j)
+                         	{
+                          		x[i][j]=0;
+                          		T[i][j]=0;
+                          		p[i][j]=0.00562*h[i]*(sqrt(f/ro));
+                          		Dx[i][j]=0.002513*f*(-0.0386+0.5*(log(2/p[i][j]))+(1/(3*(sqrt(2)))*(cos(T[i][j]))));
+                                Dxc[i][j]=Dx[i][j]-p[i][j];
+                          		F[i][j]=0.00046052*log10(2*h[i]/Ds[i]);
+                          		X[i][j]=w*F[i][j];
+                                Xlc[i][j]=X[i][j]+Dxc[i][j];
+                                Fc[i][j]=(Xlc[i][j])/w;
+                         	}
+                         	else if(j>i)
+                         	{
+                          		if (j<4) x[i][j]=Lbc;
+                          		else x[i][j]=Lbc/2;
+                          		T[i][j]=atan(x[i][j]/(h[i]+h[j]));//teta
+                         		p[i][j]=0.00281004*(D[i][j])*(sqrt(f/ro));
+                          		Dx[i][j]=0.002513*f*(-0.0386+0.5*(log(2/p[i][j]))+(1/(3*(sqrt(2)))*(cos(T[i][j]))));
+                                Dxc[i][j]=Dx[i][j]-p[i][j];
+                          		F[i][j]=0.00046052*log10(D[i][j]/d[i][j]);
+                          		X[i][j]=w*F[i][j];
+                                Xlc[i][j]=X[i][j]+Dxc[i][j];// Xl corrigido
+                                Fc[i][j]=(Xlc[i][j])/w;// Xl / 2*pi*f
+                         	}
+                         	else
+                         	{
+                          		x[i][j]=0;
+                          		T[i][j]=T[j][i];
+                          		p[i][j]=p[j][i];
+                          		Dx[i][j]=Dx[j][i];
+                                Dxc[i][j]=Dxc[j][i];
+                          		F[i][j]=F[j][i];
+                          		X[i][j]=X[j][i];
+                                Xlc[i][j]=Xlc[j][i];
+                                Fc[i][j]=Fc[j][i];
+                         	}
+                        }
+                    }
+
+                    for (i=0;i<3;i++)
+                    {
+                    	for (j=0;j<3;j++)
+                       	{
+                       		if (j>=i)
+                       		{
+                       			DX[i][j]=w*(-Fc[3][i])*Fc[j][3]/Fc[3][3];
+                       			Xeq[i][j]=Xlc[i][j]+DX[i][j];
+                                Leq[i][j]=(Xeq[i][j])/w;
+                       		}
+                       		else
+                       		{
+                     			DX[i][j]=DX[j][i];
+                       			Xeq[i][j]=Xeq[j][i];
+                                Leq[i][j]=Leq[j][i];
+                       		}
+                       	}
+                    }
+                    La=Leq[0][0]-0.5*(Leq[0][1]+Leq[0][2]);
+                    Lb=Leq[1][1]-0.5*(Leq[1][0]+Leq[1][2]);
+                    Lc=Leq[2][2]-0.5*(Leq[2][0]+Leq[2][1]);
+                    /*             REATÂNCIAS APARENTES              */
+                    Xa=w*La;
+                    Xb=w*Lb;
+                    Xc=w*Lc;
+                    printf("\nREAT%cNCIAS APARENTES:\n",182);
+                    printf("\nXa= %g Ohm/km\n",Xa);
+                    printf("\nXb= %g Ohm/km\n",Xb);
+                    printf("\nXc= %g Ohm/km\n",Xc);
+
+                    /* REATÂNCIA INDUTIVA DE SEQÜÊNCIA POSITIVA OU DE SERVICO */
+                    Xs=(Xa+Xb+Xc)/3;
+                    printf("\nREAT%cNCIA DE SEQ%c%cNCIA POSITIVA OU DE SERVI%cO:\n",182,154,210,128);
+                    printf("\nXs= %g Ohm/km\n",Xs);
+                    getch();
+                }
+                else
+                {
+                	printf ("\nDigite o n%cmero correspondente!\n",163);
+                }
+            }
+            else
+            {
+            	printf ("\nDigite o n%cmero correspondente!\n",163);
+            }
+        }
+        //					SEM CONSIDERAR O SOLO
+        else if (solo==2)
+        {
+        	w=2*pi*f;
+	        for (i=0;i<4;i++)
+	        {
+	        	for (j=0;j<4;j++)
+	            {
+	            	if (i==j)
+	                {
+	                	F[i][j]=0.00046052*log10(1/Ds[i]);
+	                  	X[i][j]=w*F[i][j];
+	                }
+	                else if (j>i)
+	                {
+	                	F[i][j]=0.00046052*log10(1/d[i][j]);
+	                  	X[i][j]=w*F[i][j];
+	                }
+	                else
+	                {
+	                	F[i][j]=F[j][i];
+	                  	X[i][j]=w*F[i][j];
+	                }
+	            }
+	        }
+
+	        for (i=0;i<3;i++)
+	        {
+	        	for (j=0;j<3;j++)
+	            {
+	            	if (j>=i)
+	                {
+	                	DX[i][j]=w*(-F[3][i])*F[j][3]/F[3][3];
+	                  	Xeq[i][j]=X[i][j]+DX[i][j];
+                        Leq[i][j]=(Xeq[i][j])/w;
+	                }
+	                else
+	                {
+	                	DX[i][j]=DX[j][i];
+	                  	Xeq[i][j]=X[i][j]+DX[i][j];
+                        Leq[i][j]=(Xeq[i][j])/w;
+	                }
+	            }
+	        }
+            La=Leq[0][0]-0.5*(Leq[0][1]+Leq[0][2]);
+            Lb=Leq[1][1]-0.5*(Leq[1][0]+Leq[1][2]);
+            Lc=Leq[2][2]-0.5*(Leq[2][0]+Leq[2][1]);
+            /*             REATÂNCIAS APARENTES              */
+	        Xa=w*La;
+	        Xb=w*Lb;
+	        Xc=w*Lc;
+	        printf("\nREAT%cNCIAS APARENTES:\n",182);
+	        printf("\nXa= %g Ohm/km\n",Xa);
+	        printf("\nXb= %g Ohm/km\n",Xb);
+	        printf("\nXc= %g Ohm/km\n",Xc);
+
+	        /* REATÂNCIA INDUTIVA DE SEQÜÊNCIA POSITIVA OU DE SERVIÇO */
+	        Xs=(Xa+Xb+Xc)/3;
+	        printf("\nREAT%cNCIA DE SEQ%c%cNCIA POSITIVA OU DE SERVI%cO:\n",182,154,210,128);
+	        printf("\nXs= %g Ohm/km\n",Xs);
+            getch();
+	    }
+	    else
+	    {
+	    	printf ("\nDigite o n%cmero correspondente!\n",163);
+	    }
+	}
+    //							RESISTÊNCIA
+    else if (Reat==3)
+    {
+    	printf("Entre com o valor da resist%cncia do condutor.\n",136);
+        scanf("%f",&r[0]);//Pega a entrada do usuário --- r[0]=0.2977;
+		r[1]=r[0];
+        r[2]=r[0];
+        printf("Entre com o valor da resist%cncia do p%cra-raio.\n",136,160);
+        scanf("%f",&r[3]);//Pega a entrada do usuário --- r[3]=3.045;
+        printf("Entre com o valor de alfa.\n");
+        scanf("%f",&alfa);//Pega a entrada do usuário --- alfa=0.00406;
+        printf("Entre com o valor da temperatura inicial.\n");
+        scanf("%d",&t1);//Pega a entrada do usuário --- t1=50;
+        printf("Entre com o valor da temperatura final.\n");
+        scanf("%d",&t2);//Pega a entrada do usuário --- t2=75;
+        printf("Entre com o valor da resistividade do solo.\n");
+        scanf("%d",&ro);//Pega a entrada do usuário --- ro=100;
+        rl[0]=r[0]*(1+alfa*(t2-t1));
+        rl[1]=rl[0];
+        rl[2]=rl[0];
+        rl[3]=r[3];
+        for (i=0;i<4;i++)
+        {
+        	for (j=0;j<4;j++)
+            {
+            	if (i==j)
+             	{
+              		Rc[i][j]=rl[i];// MATRIZ DAS RESISTÊNCIAS
+              		p[i][j]=0.00562*h[i]*sqrt(f/ro);// PRÓPRIA
+              		teta[i][j]=0;
+		            P[i][j]=(pi/8)-(p[i][j]/(3*sqrt(2)))*cos(teta[i][j])+(p[i][j]*p[i][j]/16)*cos(2*teta[i][j])*(0.6728+log(2/p[i][j]))+(p[i][j]*p[i][j]/16)*teta[i][j]*sin(2*teta[i][j]);//Matriz corrigida
+		            DR[i][j]=0.002513*f*P[i][j];
+		            R[i][j]=rl[i]+DR[i][j];// MATRIZ DAS RESISTÊNCIAS CORRIGIDA
+	            }
+             	else if (i<j)
+             	{
+              		Rc[i][j]=0;// MATRIZ DAS RESISTÊNCIAS
+              		p[i][j]=0.00281004*D[i][j]*sqrt(f/ro);// MÚTUA
+		            teta[i][j]=atan(x[i][j]/(h[i]+h[j]));
+		            P[i][j]=(pi/8)-(p[i][j]/(3*sqrt(2)))*cos(teta[i][j])+(p[i][j]*p[i][j]/16)*cos(2*teta[i][j])*(0.6728+log(2/p[i][j]))+(p[i][j]*p[i][j]/16)*teta[i][j]*sin(2*teta[i][j]);//Matriz corrigida
+	                DR[i][j]=0.002513*f*P[i][j];
+		            R[i][j]=DR[i][j];// MATRIZ DAS RESISTÊNCIAS CORRIGIDA
+              	}
+             	else
+             	{
+              		p[i][j]=p[j][i];// MÚTUA
+		            teta[i][j]=teta[j][i];
+		            P[i][j]=P[j][i];
+		            DR[i][j]=DR[j][i];
+		            R[i][j]=R[j][i];// MATRIZ DAS RESISTÊNCIAS CORRIGIDA
+	            }
+            }
+        }
+
+        /*  REDUÇÃO DA MATRIZ   */
+        for (i=0;i<3;i++)
+        {
+        	for (j=0;j<3;j++)
+            {
+            	Req[i][j]=R[i][j]-R[3][i]*R[j][3]/R[3][3];
+            }
+        }
+
+        /*  RESISTÊNCIA DE SEQÜÊNCIA POSITIVA   */
+		R11=Req[0][0]-Req[0][1];
+        printf("\nRESIST%cNCIA DE SEQ%c%cNCIA POSITIVA E NEGATIVA:\n",210,154,210);
+        printf("R11= %g Ohm/km\n",R11);
+
+        /*  RESISTÊNCIA DE SEQÜÊNCIA ZERO   */
+        printf("\nRESIST%cNCIA DE SEQ%c%cNCIA ZERO:\n",210,154,210);
+        Roo=Req[0][0]+2*Req[0][1];
+        printf("Roo= %g Ohm/km\n",Roo);
+        getch();
+    }
+    else
+    {
+    	printf ("\nDigite o n%cmero correspondente!\n",163);
+    }
+    clrscr();
+    printf ("\nDeseja fazer mais algum c%clculo?\n",160);
+    printf ("(1)Sim;\n");
+    printf ("(2)N%co.\n",198);
+    scanf("%d",&z);//Pega a entrada do usuário
+    if (z==1)
+    {
+    	k=1;
+    }
+    else if (z==2)
+    {
+    	k=0;
+    }
+    else
+    {
+	    k=1;
+	    printf ("\nDigite o n%cmero correspondente!\n",163);
+    }
+}
+return (0);
+}

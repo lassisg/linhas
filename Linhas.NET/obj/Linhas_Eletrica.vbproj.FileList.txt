@@ -1,0 +1,16 @@
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Linhas_Eletrica.vbproj.ResolveComReference.cache
+obj\Debug\Linhas_Eletrica.vbproj.GenerateResource.Cache
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\Linhas_Eletrica.vbproj.ResolveComReference.cache
+obj\Release\Project1.frmLinhas_Ele.resources
+obj\Release\Linhas_Eletrica.vbproj.GenerateResource.Cache
+obj\Release\Project1.exe
+obj\Release\Project1.xml
+.\bin\Linhas de Transmissão.exe
+.\bin\Linhas de Transmissão.pdb
+.\bin\Linhas de Transmissão.xml
+obj\Debug\Linhas_Ele.frmLinhas_Ele.resources
+obj\Debug\Linhas de Transmissão.exe
+obj\Debug\Linhas de Transmissão.xml
+obj\Debug\Linhas de Transmissão.pdb

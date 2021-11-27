@@ -1,0 +1,11 @@
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\bin\Linhas de Transmissão.exe
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\bin\Linhas de Transmissão.pdb
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\bin\Linhas de Transmissão.xml
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\ResolveAssemblyReference.cache
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\Linhas_Eletrica.vbproj.ResolveComReference.cache
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\Linhas_Ele.frmLinhas_Ele.resources
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\GenerateResource.read.1.tlog
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\GenerateResource.write.1.tlog
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\Linhas de Transmissão.exe
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\Linhas de Transmissão.xml
+E:\Leandro\Pessoal\Programacao\Linhas\Linhas.NET\obj\Debug\Linhas de Transmissão.pdb
